@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     "AI PM who launched products to 1M+ patients at NimbleRx (YC W15). Cal Hacks Grand Prize. MLH Top 50. Health AI trust researcher.",
   openGraph: {
     title: "Jiahui Jin — AI PM · Health Tech",
-    description: "Ask my AI about my background, projects, and how I think.",
+    description: "Ask about my background, projects, and how I think.",
     url: "https://jiahui.xyz",
   },
 };

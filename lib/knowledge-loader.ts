@@ -9,9 +9,15 @@ const ALWAYS_INCLUDE = ['_index.md']
 // Ordered sections for clean context assembly
 const SECTION_ORDER = [
   '_index.md',
+  'personal-rag.md',
   'achievements.md',
+  'linkedin-posts.md',
+  'virality.md',
+  'leadership.md',
+  'ai-research.md',
   'experience/nimblyrx.md',
   'experience/other-roles.md',
+  'experience/policy-change.md',
   'experience/ubc.md',
   'projects/health-ai-dashboard.md',
   'projects/calhacks-and-other.md',
@@ -71,35 +77,62 @@ function getAllKnowledgeFiles(): string[] {
 
 /**
  * Reads all knowledge files and assembles them into a single context string.
- * For most personal portfolios, this fits well within Claude's context window.
- * 
- * If you grow to 100+ files, upgrade this to use vector search (see retrieval.ts)
+ * Format is optimized so the model can find sections quickly; no details are omitted.
  */
 export async function readKnowledgeBase(): Promise<string> {
-  const sections: string[] = []
-  
-  // First pass: load files in defined order
+  const sectionEntries: { label: string; content: string }[] = []
+
   for (const filePath of SECTION_ORDER) {
     const content = readFileContent(filePath)
     if (content) {
-      const label = filePath.replace('.md', '').replace('/', ' / ').toUpperCase()
-      sections.push(`\n\n### [${label}]\n\n${content}`)
+      const label = filePath.replace('.md', '').replace(/\//g, ' / ').toUpperCase()
+      sectionEntries.push({ label, content })
     }
   }
-  
-  // Second pass: catch any files not in the ordered list
+
   const allFiles = getAllKnowledgeFiles()
   for (const filePath of allFiles) {
     if (!SECTION_ORDER.includes(filePath)) {
       const content = readFileContent(filePath)
       if (content) {
-        const label = filePath.replace('.md', '').replace('/', ' / ').toUpperCase()
-        sections.push(`\n\n### [${label}]\n\n${content}`)
+        const label = filePath.replace('.md', '').replace(/\//g, ' / ').toUpperCase()
+        sectionEntries.push({ label, content })
       }
     }
   }
-  
-  return sections.join('\n')
+
+  const sectionList = sectionEntries.map((e) => `- [${e.label}]`).join('\n')
+  const questionMap = `
+PERSONAL QUESTIONS (answer these — do NOT say the unsure/reach-out message):
+Any question about Jia as a person, what she likes, believes, does for fun, her life, interests, passions, preferences, hobbies, travel, food, philosophy, how she thinks, free time, favourite things → ALWAYS use [PERSONAL-RAG] and [INDEX]. The answers are there. Answer in her voice.
+
+TOPIC BUTTONS (give EXTENSIVE answers — 4–8+ sentences, specific numbers and outcomes): Work experience, Health AI research, Hackathons, Why PM, Fav food, Virality, Leadership, Online persona. Use the sections below; do not give a one-line reply.
+
+QUESTION → SECTIONS:
+- Who is Jia? / tell me about you / intro / background → [INDEX], [PERSONAL-RAG] Identity
+- Personal / your life / what do you like / hobbies / fun / free time / interests → [PERSONAL-RAG] Hobbies, Fat Fridays, Creative Expression, Taste, [INDEX] Personal
+- Favourite food / restaurants / what does she eat → [PERSONAL-RAG] Food Exploration (Fat Fridays), [INDEX]. Answer ONLY as Jia: Fat Fridays, tier list 78k views, better than Beli, Taiwanese/Thai/Sichuan/Osaka. FORBIDDEN: "AI", "assistant", "I don't have preferences", "subjective experience". Answer positively.
+- Beliefs / what does she think / healthcare / AI → [PERSONAL-RAG] Core Passions, Research Interests
+- How does Jia think? / decision-making → [PERSONAL-RAG] Decision-Making Patterns
+- Travel / places she's been → [PERSONAL-RAG] Solo Travel
+- Courses / COMM 394 → [PERSONAL-RAG] Academic Interests, [EXPERIENCE / UBC]
+- Work / NimbleRx / Cal Hacks / MLH → [INDEX] Real Numbers, [ACHIEVEMENTS], [EXPERIENCE / NIMBLYRX], [LINKEDIN-POSTS]
+- Leadership / policy campaign / petition / 15k signatures / CUS / nwplus / Programs Co-Chair / student government → [LEADERSHIP]
+- Policy change / petition at 17 → [LEADERSHIP], [EXPERIENCE / POLICY-CHANGE]
+- UBC / BUCS / CUS / clubs → [EXPERIENCE / UBC], [LEADERSHIP]
+- Virality / viral moments / reach / views / performative male contest / LinkedIn 900k / 5M / media coverage → [VIRALITY], [INDEX]
+- Performative male / online persona → [VIRALITY], [PERSONAL-RAG] Creative Expression, [INDEX]
+- LinkedIn / posts → [LINKEDIN-POSTS], [VIRALITY], [INDEX]
+- Research / AI research / health AI trust / trust benchmark / 836 reviews / supply chain / Harish Krishnan / infrastructure → [AI-RESEARCH], [PROJECTS / HEALTH-AI-DASHBOARD], [EXPERIENCE / NIMBLYRX], [ACHIEVEMENTS]
+- Only if topic is genuinely not anywhere above → say "I'm unsure but feel free to reach out to Jia and talk more here jiahui.k.jin@gmail.com"
+`
+  const intro = `# Jia's knowledge — use ONLY this to answer. Match the user's question to the map, then answer from that section.\n\nSections:\n${sectionList}\n${questionMap}\n---\n`
+
+  const body = sectionEntries
+    .map(({ label, content }) => `## [${label}]\n\n${content.trim()}\n`)
+    .join('\n---\n\n')
+
+  return intro + body
 }
 
 /**

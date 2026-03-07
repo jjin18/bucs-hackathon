@@ -1,6 +1,7 @@
 # UBC — Education
-**University of British Columbia | Vancouver, BC**
-**Combined Major in Business and Computer Science (BUCS) | Class of 2026**
+**University of British Columbia | Vancouver, BC | BUCS | Class of 2026**
+
+**Use for:** BUCS degree, why it matters for PM, technical/product skills, GPA context, club involvement (BUCS co-chair, CUS first year rep, Canada's largest business student government 3.5k members $1.2M budget, nwplus engagement coordinator).
 
 ## What BUCS Is
 A genuinely dual-track degree requiring full Sauder School of Business coursework alongside rigorous CS. Not "CS with business electives." I graduate fluent in both — I can read a cap table and write a data pipeline.
@@ -28,3 +29,19 @@ Most PM candidates come from one side: either strong technical background or str
 
 ## Context on GPA
 I've been running a company, interning full-time, competing in hackathons, and building independent research projects simultaneously with full-time coursework. My transcript reflects real tradeoffs — not someone who optimized for GPA at the expense of building.
+
+---
+
+## Club involvement and leadership (UBC)
+
+**BUCS — Co-Chair**  
+Co-chair of the BUCS (Business and Computer Science) student association at UBC.
+
+**CUS (Commerce Undergraduate Society) — First Year Rep**  
+First year representative in CUS at UBC.
+
+**Led Canada's largest business student government**  
+3,500 members, $1.2M budget, Board of Directors. (Context: CUS / commerce student government at UBC.)
+
+**nwplus — Engagement Coordinator**  
+Engagement coordinator for nwplus (UBC's hackathon and tech community organization).

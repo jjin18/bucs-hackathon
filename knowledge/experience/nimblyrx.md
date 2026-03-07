@@ -1,6 +1,8 @@
 # NimbleRx — AI Product Manager Intern
 **May 2025 – August 2025 | Redwood City, CA | YC W15**
 
+**Use for:** NimbleRx, Mira AI, 1M patients, LLM eval, pharmacy AI, health companion, what she did at NimbleRx.
+
 ## The Role
 AI PM intern at NimbleRx, a YC-backed tech-enabled pharmacy platform. I owned AI product features end-to-end — from patient-facing companions to backend pharmacy automation — in a HIPAA-regulated, clinically consequential environment.
 

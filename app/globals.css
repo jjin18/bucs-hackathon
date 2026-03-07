@@ -1,2 +1,15 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { height: 100%; }
+html, body { height: 100%; background: #fff; }
+
+/* Next.js / Cursor portal container — keep 0×0 portals from affecting layout */
+nextjs-portal {
+  display: block;
+  position: fixed;
+  z-index: 9999;
+  pointer-events: none;
+}
+nextjs-portal:empty {
+  width: 0 !important;
+  height: 0 !important;
+  overflow: hidden;
+}

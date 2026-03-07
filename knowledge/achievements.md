@@ -1,5 +1,7 @@
 # Achievements & Recognition
 
+**Use for:** Hackathon wins (Cal Hacks, MLH Top 50, OceanTech), YC, product impact numbers (1M patients, 20% escalation reduction), research (836 reviews, trust eval), BlackBerry/VSP numbers.
+
 ## Hackathons
 - **Cal Hacks 1st Overall** — world's largest student hackathon, out of 2,500+ teams. Built Duet: mind-controlled music with EEG hardware integration at sub-200ms latency. devpost.com/software/duet-0tbkxe
 - **MLH Top 50 Globally** — out of 150,000+ hackers worldwide. top.mlh.io/2025/profiles/jiahui-jin
