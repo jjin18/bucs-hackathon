@@ -1,22 +1,23 @@
-// app/api/chat/route.ts
-// Receives { messages } from the frontend, calls Claude with the system prompt,
-// parses the JSON response, returns { answer, artifact_ids }.
-
 import { NextRequest, NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
-import { buildSystemPrompt } from "@/lib/system-prompt";
+
+const SYSTEM_PROMPT = `You are a helpful assistant for Jiahui (Jia) Jin's portfolio. Answer questions about her briefly and professionally. She is an AI PM, worked at NimbleRx (YC W15), Cal Hacks 1st place, MLH Top 50, health AI researcher. Keep answers to 2-4 sentences unless asked for more.`;
+
+// Try these in order until one works (your API key may have access to a subset)
+const MODELS_TO_TRY = [
+  process.env.ANTHROPIC_MODEL?.trim(),
+  "claude-3-5-haiku-20241022",
+  "claude-3-haiku-20240307",
+  "claude-sonnet-4-20250514",
+  "claude-3-5-sonnet-20241022",
+].filter(Boolean) as string[];
 
 export async function POST(request: NextRequest) {
   try {
-    const apiKey = process.env.ANTHROPIC_API_KEY;
-    if (!apiKey?.trim()) {
-      console.error("Chat API: ANTHROPIC_API_KEY is not set");
+    const apiKey = process.env.ANTHROPIC_API_KEY?.trim();
+    if (!apiKey) {
       return NextResponse.json(
-        {
-          answer:
-            "Chat isn't configured yet. Add your Anthropic API key to .env.local (see .env.example) and restart the dev server.",
-          artifact_ids: [],
-        },
+        { answer: "Add ANTHROPIC_API_KEY to .env.local and restart the server.", error: true },
         { status: 500 }
       );
     }
@@ -25,85 +26,56 @@ export async function POST(request: NextRequest) {
     const messages = Array.isArray(body?.messages) ? body.messages : [];
     if (messages.length === 0) {
       return NextResponse.json(
-        { answer: "No messages in request.", artifact_ids: [] },
+        { answer: "No messages sent.", error: true },
         { status: 400 }
       );
     }
 
-    const systemPrompt = await buildSystemPrompt();
-
     const client = new Anthropic({ apiKey });
-    const response = await client.messages.create({
-      model: "claude-3-5-sonnet-20241022",
-      max_tokens: 1024,
-      system: systemPrompt,
-      messages: messages.map((m: { role: string; content: string }) => ({
-        role: m.role as "user" | "assistant",
-        content: m.content,
-      })),
-    });
+    const messagePayload = messages.map((m: { role: string; content: string }) => ({
+      role: m.role as "user" | "assistant",
+      content: m.content,
+    }));
 
-    const raw = response.content[0]?.type === "text" ? response.content[0].text : "";
-
-    let parsed: { answer: string; artifact_ids: string[] };
-    try {
-      const cleaned = raw.replace(/```json\n?|\n?```/g, "").trim();
-      parsed = JSON.parse(cleaned);
-    } catch {
-      parsed = { answer: raw, artifact_ids: [] };
+    let lastError: unknown = null;
+    for (const model of MODELS_TO_TRY) {
+      try {
+        const response = await client.messages.create({
+          model,
+          max_tokens: 512,
+          system: SYSTEM_PROMPT,
+          messages: messagePayload,
+        });
+        const text =
+          response.content[0]?.type === "text"
+            ? response.content[0].text
+            : "No response.";
+        return NextResponse.json({ answer: text, error: false });
+      } catch (err: unknown) {
+        const msg = err instanceof Error ? err.message : String(err);
+        if (msg.includes("404") || msg.includes("not_found")) {
+          lastError = err;
+          continue;
+        }
+        throw err;
+      }
     }
 
-    return NextResponse.json(parsed);
-  } catch (error: unknown) {
-    const message = getErrorMessage(error);
-    console.error("Chat API error:", error);
-
-    if (error && typeof error === "object" && "status" in error && (error as { status: number }).status === 401) {
-      return NextResponse.json(
-        {
-          answer: "Invalid API key. Check ANTHROPIC_API_KEY in .env.local.",
-          artifact_ids: [],
-        },
-        { status: 500 }
-      );
-    }
-    if (message && message.toLowerCase().includes("authentication")) {
-      return NextResponse.json(
-        {
-          answer: "Invalid API key. Check ANTHROPIC_API_KEY in .env.local.",
-          artifact_ids: [],
-        },
-        { status: 500 }
-      );
-    }
-
-    const devHint = process.env.NODE_ENV === "development" && message
-      ? ` ${message}`
-      : "";
-
+    console.error("Chat API: all models failed", lastError);
     return NextResponse.json(
       {
-        answer: `Something went wrong. Please try again.${devHint}`,
-        artifact_ids: [],
+        answer:
+          "No model worked with your API key. Check your key at console.anthropic.com and that your account has API access.",
+        error: true,
       },
       { status: 500 }
     );
-  }
-}
-
-function getErrorMessage(error: unknown): string {
-  if (error instanceof Error) return error.message;
-  const o = error as Record<string, unknown>;
-  if (o?.message && typeof o.message === "string") return o.message;
-  if (o?.error && typeof o.error === "object" && o.error !== null) {
-    const inner = (o.error as Record<string, unknown>).message;
-    if (typeof inner === "string") return inner;
-  }
-  const s = String(error);
-  if (s !== "[object Object]") return s;
-  try {
-    return JSON.stringify(error);
-  } catch {
-    return "Unknown error";
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : String(err);
+    console.error("Chat API error:", err);
+    return NextResponse.json(
+      { answer: `Error: ${message.length > 200 ? message.slice(0, 200) + "…" : message}`, error: true },
+      { status: 500 }
+    );
   }
 }

@@ -1,3 +1,2 @@
-/* globals.css — minimal reset, everything else is inline in PortfolioChat.tsx */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { height: 100%; }

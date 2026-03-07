@@ -494,14 +494,18 @@ export default function PortfolioChat() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ messages: next }),
       });
-      const data = await res.json();
+      const data = await res.json().catch(() => ({ answer: "Invalid response from server.", artifact_ids: [] }));
       setMessages((prev) => [...prev, {
         role: "assistant",
         content: data.answer || "Something went wrong.",
         artifact_ids: data.artifact_ids || [],
       }]);
-    } catch {
-      setMessages((prev) => [...prev, { role: "assistant", content: "Something went wrong — try again.", artifact_ids: [] }]);
+    } catch (e) {
+      const isNetwork = e instanceof TypeError && (e.message === "Failed to fetch" || e.message?.includes("NetworkError"));
+      const msg = isNetwork
+        ? "Connection failed. Run start.bat or start.ps1 from the project folder, or run 'npm run dev' then open http://127.0.0.1:3005"
+        : "Something went wrong — try again.";
+      setMessages((prev) => [...prev, { role: "assistant", content: msg, artifact_ids: [] }]);
     } finally {
       setLoading(false);
     }
