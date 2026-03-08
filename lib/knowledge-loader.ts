@@ -17,6 +17,7 @@ const TOPIC_EVIDENCE: Record<string, string> = {
   online_persona: 'evidence/online_persona.md',
   leadership: 'evidence/leadership.md',
   fav_food: 'evidence/fav_food.md',
+  personal_life: 'evidence/personal_life.md',
   why_pm: 'evidence/work_experience.md',
 }
 const TOPIC_NARRATIVE: Record<string, string> = {
@@ -239,7 +240,7 @@ export async function getKnowledgeForTopic(topic: string): Promise<string> {
 
   // Seed canonical resume KB first (highest authority) so it's in context for every request
   const canonical = readKnowledgeBaseFile(CANONICAL_RESUME_KB)
-  if (canonical) parts.push(`## CANONICAL_KNOWLEDGE_BASE\n\n${canonical.trim()}`)
+  if (canonical) parts.push(`## Knowledge\n\n${canonical.trim()}`)
 
   const rules = readKnowledgeBaseFile('citation_rules.md')
   if (rules) parts.push(rules.trim())

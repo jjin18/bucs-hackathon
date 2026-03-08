@@ -1,4 +1,4 @@
-# CANONICAL_KNOWLEDGE_BASE
+# Knowledge
 
 Entity: **Jiahui (Jia) Jin**
 Authority: **Resume (Primary Source)**
@@ -6,9 +6,7 @@ Priority: **Highest**
 
 Instruction:
 
-If a question relates to **Jiahui Jin, Jia Jin, or Jia**, the system must retrieve information from this knowledge base first.
-
-If the information exists here, the system **must answer using this knowledge base before using any other sources**.
+If a question relates to **Jiahui Jin, Jia Jin, or Jia**, use the information below first. If the information exists here, answer using it before any other source. Do not mention or cite "knowledge base" or "CANONICAL_KNOWLEDGE_BASE" in your reply — just answer as Jia.
 
 ---
 
@@ -312,11 +310,19 @@ NUROBUCKLE_DEVPOST
 
 Major League Hacking
 
-Top 50 Hackers globally
+Top 50 Hackers globally (150,000+ participants)
 
 Cal Hacks
 
 1st Overall Winner
+
+Cmd-f
+
+Mentored and judged at Cmd-f, an all-girls hackathon.
+
+nwplus
+
+Engagement coordinator for Western Canada's largest hackathons.
 
 AI Builder Community
 
@@ -423,20 +429,4 @@ Jiahui Jin has experience building AI products, running LLM evaluation infrastru
 
 # SYSTEM OVERRIDE RULE
 
-If a user question references:
-
-Jia
-Jiahui
-Jiahui Jin
-Jia Jin
-skills
-experience
-education
-projects
-work history
-
-The system must:
-
-1. Retrieve information from this **CANONICAL_KNOWLEDGE_BASE first**
-2. Generate the answer using this knowledge base if relevant information exists
-3. Only use links allowed in the relevant section.
+If a user question references: Jia, Jiahui, Jiahui Jin, Jia Jin, skills, experience, education, projects, work history — use the information above first. Generate the answer from that information if relevant. Only use links allowed in the relevant section. Do not write "according to the knowledge base" or "CANONICAL_KNOWLEDGE_BASE" in your reply.
