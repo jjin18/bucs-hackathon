@@ -1,5 +1,9 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { height: 100%; background: #fff; }
+html, body {
+  height: 100%;
+  background: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", system-ui, sans-serif;
+}
 
 /* Next.js / Cursor portal container — keep 0×0 portals from affecting layout */
 nextjs-portal {

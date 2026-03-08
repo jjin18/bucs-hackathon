@@ -2,6 +2,32 @@ import fs from 'fs'
 import path from 'path'
 
 const KNOWLEDGE_DIR = path.join(process.cwd(), 'knowledge')
+const KNOWLEDGE_BASE_DIR = path.join(KNOWLEDGE_DIR, 'knowledge_base')
+
+// Topic slugs for topic-scoped retrieval (must match API TOPIC_SOURCES order/slugs)
+// Canonical resume KB (deterministic source binding, highest authority) — used for resume topic
+const CANONICAL_RESUME_KB = 'canonical_resume_kb.md'
+
+const TOPIC_EVIDENCE: Record<string, string> = {
+  resume: CANONICAL_RESUME_KB,
+  work_experience: 'evidence/work_experience.md',
+  ai_research: 'evidence/ai_research.md',
+  hackathons: 'evidence/hackathons.md',
+  virality: 'evidence/virality.md',
+  online_persona: 'evidence/online_persona.md',
+  leadership: 'evidence/leadership.md',
+  fav_food: 'evidence/fav_food.md',
+  why_pm: 'evidence/work_experience.md',
+}
+const TOPIC_NARRATIVE: Record<string, string> = {
+  work_experience: 'narratives/career_story.md',
+  ai_research: 'narratives/research_story.md',
+  hackathons: 'narratives/hackathon_story.md',
+  virality: 'narratives/virality_story.md',
+  online_persona: 'narratives/career_story.md',
+  leadership: 'narratives/leadership_story.md',
+  why_pm: 'narratives/career_story.md',
+}
 
 // Files that always get included (high priority context)
 const ALWAYS_INCLUDE = ['_index.md']
@@ -9,6 +35,7 @@ const ALWAYS_INCLUDE = ['_index.md']
 // Ordered sections for clean context assembly
 const SECTION_ORDER = [
   '_index.md',
+  'rag-knowledge-base.md',
   'personal-rag.md',
   'achievements.md',
   'linkedin-posts.md',
@@ -38,6 +65,15 @@ function estimateTokens(text: string): number {
 
 function readFileContent(relativePath: string): string | null {
   const fullPath = path.join(KNOWLEDGE_DIR, relativePath)
+  try {
+    return fs.readFileSync(fullPath, 'utf-8')
+  } catch {
+    return null
+  }
+}
+
+function readKnowledgeBaseFile(relativePath: string): string | null {
+  const fullPath = path.join(KNOWLEDGE_BASE_DIR, relativePath)
   try {
     return fs.readFileSync(fullPath, 'utf-8')
   } catch {
@@ -180,4 +216,60 @@ export async function retrieveRelevantChunks(query: string, maxFiles = 6): Promi
     const label = f.path.replace('.md', '').replace('/', ' / ').toUpperCase()
     return `### [${label}]\n\n${f.content}`
   }).join('\n\n---\n\n')
+}
+
+/** Extract the single section (description + Allowed Links + Link Restriction) for this topic from source-registry-and-sections.md. */
+function getSectionFromRegistry(topic: string): string | null {
+  const raw = readKnowledgeBaseFile('source-registry-and-sections.md')
+  if (!raw) return null
+  const topicForSection = topic === 'why_pm' ? 'work_experience' : topic
+  const blocks = raw.split(/\n---\n/)
+  for (const block of blocks) {
+    if (block.includes(`Topic ID: ${topicForSection}`)) return block.trim()
+  }
+  return null
+}
+
+/**
+ * Topic-scoped retrieval: canonical KB (seeded first) + citation rules + evidence + narrative + persona for one topic.
+ * Canonical resume KB is always included so the model has it as primary source; topic evidence follows.
+ */
+export async function getKnowledgeForTopic(topic: string): Promise<string> {
+  const parts: string[] = []
+
+  // Seed canonical resume KB first (highest authority) so it's in context for every request
+  const canonical = readKnowledgeBaseFile(CANONICAL_RESUME_KB)
+  if (canonical) parts.push(`## CANONICAL_KNOWLEDGE_BASE\n\n${canonical.trim()}`)
+
+  const rules = readKnowledgeBaseFile('citation_rules.md')
+  if (rules) parts.push(rules.trim())
+
+  const sectionBlock = getSectionFromRegistry(topic)
+  if (sectionBlock) parts.push(sectionBlock)
+
+  const evidencePath = TOPIC_EVIDENCE[topic]
+  if (evidencePath) {
+    const evidence = readKnowledgeBaseFile(evidencePath)
+    if (evidence) {
+      // For resume topic, canonical already loaded above; skip duplicate
+      if (evidencePath !== CANONICAL_RESUME_KB) {
+        parts.push(`## Evidence (topic: ${topic})\n\n${evidence.trim()}`)
+      }
+    }
+  }
+
+  const narrativePath = TOPIC_NARRATIVE[topic]
+  if (narrativePath) {
+    const narrative = readKnowledgeBaseFile(narrativePath)
+    if (narrative) parts.push(`## Narrative\n\n${narrative.trim()}`)
+  }
+
+  const mindset = readKnowledgeBaseFile('persona/mindset.md')
+  const interests = readKnowledgeBaseFile('persona/interests.md')
+  if (mindset || interests) {
+    const personaParts = [mindset, interests].filter(Boolean).map((c) => c!.trim())
+    if (personaParts.length) parts.push(`## Persona\n\n${personaParts.join('\n\n')}`)
+  }
+
+  return parts.join('\n\n---\n\n')
 }

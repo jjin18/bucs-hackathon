@@ -13,10 +13,10 @@ const SUGGESTED_TOP = [
 ];
 
 const SUGGESTED_BOTTOM = [
-  { label: "Fav food", q: "What's your favourite food and restaurant scene? Tell me about Fat Fridays, your Vancouver tier list, and what you love to eat." },
-  { label: "Virality", q: "What viral moments have you had? Tell me about your reach across LinkedIn (900k+ views), the performative male contest (millions of views, SF Standard, NYT, SF Gate), policy virality (15k signatures, national news), and how your public experimentation drives attention." },
-  { label: "Leadership", q: "Tell me about your leadership experience: the student policy campaign at 17 (15k signatures, national media), CUS Board (3,800 students), Programs Co-Chair (200 students), and nwplus (Canada's largest hackathons)." },
-  { label: "Online Persona", q: "Tell me about your online persona and LinkedIn — your posts, the 900k+ views, your framework for hackathons and getting hired, and how you show up in public." },
+  { label: "Fav food", q: "What's your favourite food? Fat Fridays, Vancouver tier list, and what you love to eat." },
+  { label: "Virality", q: "Tell me about viral moments and reach Jia has had — LinkedIn, the performative male contest, and policy virality." },
+  { label: "Leadership", q: "Tell me about your leadership experience — the policy campaign at 17, 15k signatures, and national media." },
+  { label: "Online Persona", q: "Tell me about your online persona and how you show up on LinkedIn and in public." },
 ];
 
 function Dots() {
@@ -104,38 +104,38 @@ export default function Page() {
         flexDirection: "column",
         background: "#ffffff",
         color: "#111",
-        fontFamily: "'EB Garamond', 'Georgia', serif",
-        fontSize: 18,
-        lineHeight: 1.55,
+        fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', system-ui, sans-serif",
+        fontSize: 17,
+        lineHeight: 1.47,
       }}
     >
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@300;400;500&display=swap');
         * { box-sizing: border-box; margin: 0; padding: 0; }
         @keyframes jdot { 0%,80%,100%{opacity:.25;transform:translateY(0)} 40%{opacity:1;transform:translateY(-3px)} }
-        @keyframes fadein { from{opacity:0;transform:translateY(5px)} to{opacity:1;transform:translateY(0)} }
-        ::-webkit-scrollbar { width: 4px; }
+        @keyframes fadein { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+        ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #d6cfc4; border-radius: 2px; }
-        .chip:hover { border-color: #111 !important; color: #111 !important; }
-        .send:hover:not(:disabled) { background: #c03328 !important; }
-        .msg-in { animation: fadein .18s ease both; }
-        a { color: #1a4a7a; text-decoration: none; }
+        ::-webkit-scrollbar-thumb { background: #c7c7cc; border-radius: 3px; }
+        .chip:hover { background: #D1D1D6 !important; }
+        .send:hover:not(:disabled) { opacity: 0.85; }
+        .msg-in { animation: fadein .2s ease both; }
+        a { color: #1E90FF; text-decoration: none; }
         a:hover { text-decoration: underline; }
-        textarea::placeholder { color: #7d766e; }
+        textarea::placeholder { color: #8e8e93; }
+        textarea { caret-color: #6699FF; }
       `}</style>
 
       {/* Header */}
       <header
         style={{
-          borderBottom: "1px solid #d6cfc4",
-          padding: "0 1.5rem",
-          height: 48,
+          borderBottom: "1px solid #c6c6c8",
+          padding: "0 1rem",
+          height: 52,
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
           flexShrink: 0,
-          background: "#ffffff",
+          background: "#f6f6f6",
         }}
       >
         <button
@@ -144,64 +144,46 @@ export default function Page() {
           style={{
             display: "flex",
             alignItems: "center",
-            gap: "0.9rem",
+            gap: "0.75rem",
             background: "none",
             border: "none",
-            padding: 0,
+            padding: "0.5rem 0",
             cursor: "pointer",
-            color: "inherit",
+            color: "#1E90FF",
+            fontSize: 17,
+            fontWeight: 400,
           }}
-          title="Back to main chat"
+          title={empty ? undefined : "Back to main chat"}
         >
-          <div
-            style={{
-              width: 28,
-              height: 28,
-              borderRadius: "50%",
-              background: "#13100c",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              flexShrink: 0,
-            }}
-          >
-            <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: "#fff", letterSpacing: 0 }}>JJ</span>
-          </div>
-          <div>
-            <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, letterSpacing: "0.18em", textTransform: "uppercase", color: "#111" }}>
-              Jiahui Jin
-            </span>
-          </div>
+          {!empty && (
+            <svg width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="#1E90FF" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+              <path d="M16 6L8 12L16 18" />
+            </svg>
+          )}
+          <span style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', system-ui, sans-serif", fontWeight: 600, color: "#000" }}>Jiahui Jin</span>
         </button>
-        <div style={{ display: "flex", gap: "1.25rem", alignItems: "center" }}>
-          {[
-            ["LinkedIn", "https://linkedin.com/in/jiahui-jin"],
-          ].map(([label, href]) => (
-            <a
-              key={label}
-              href={href}
-              target="_blank"
-              rel="noreferrer"
-              style={{
-                fontFamily: "'JetBrains Mono', monospace",
-                fontSize: 9,
-                letterSpacing: "0.12em",
-                textTransform: "uppercase",
-                color: "#7d766e",
-                textDecoration: "none",
-                transition: "color .1s",
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = "#111")}
-              onMouseLeave={(e) => (e.currentTarget.style.color = "#7d766e")}
-            >
-              {label}
-            </a>
-          ))}
+        <div style={{ display: "flex", alignItems: "center", gap: "1.25rem" }}>
+          <a
+            href="https://linkedin.com/in/jiahui-jin"
+            target="_blank"
+            rel="noreferrer"
+            style={{ color: "#1E90FF", fontSize: 17, textDecoration: "none" }}
+          >
+            LinkedIn
+          </a>
+          <a
+            href="https://1drv.ms/b/c/a323242b192694d0/IQBqZcm36eaZTpT1JKpUqyYsAQUqOj9tuI5gbNisfruhUIg?e=cvPJJu"
+            target="_blank"
+            rel="noreferrer"
+            style={{ color: "#1E90FF", fontSize: 17, textDecoration: "none" }}
+          >
+            Resume
+          </a>
         </div>
       </header>
 
       {/* Body */}
-      <div style={{ flex: 1, overflowY: "auto", display: "flex", flexDirection: "column" }}>
+      <div style={{ flex: 1, overflowY: "auto", display: "flex", flexDirection: "column", background: "#fff" }}>
         {empty ? (
           <div
             style={{
@@ -214,29 +196,30 @@ export default function Page() {
               textAlign: "center",
             }}
           >
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "1.25rem", marginBottom: "2.5rem", flexWrap: "wrap" }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "1.25rem", marginBottom: "2rem", flexWrap: "wrap" }}>
               <img src="/avatar-waving.png" alt="Jia" style={{ width: 72, height: "auto", display: "block", flexShrink: 0 }} />
               <h1
                 style={{
-                  fontSize: "clamp(2rem, 4vw, 3.25rem)",
-                  fontWeight: 400,
-                  lineHeight: 1.08,
-                  letterSpacing: "-0.025em",
-                  color: "#4a4540",
+                  fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', system-ui, sans-serif",
+                  fontSize: "clamp(1.75rem, 4vw, 2.5rem)",
+                  fontWeight: 600,
+                  lineHeight: 1.15,
+                  letterSpacing: "-0.02em",
+                  color: "#000",
                   maxWidth: 520,
                   margin: 0,
                 }}
               >
                 Ask me anything
                 <br />
-                <em style={{ fontStyle: "italic" }}>about Jia.</em>
+                <em style={{ fontStyle: "italic", fontWeight: 400 }}>about Jia.</em>
               </h1>
             </div>
             <div
               style={{
                 display: "flex",
                 gap: "2rem",
-                marginBottom: "2.5rem",
+                marginBottom: "2rem",
                 flexWrap: "wrap",
                 justifyContent: "center",
               }}
@@ -248,53 +231,50 @@ export default function Page() {
                 ["6M+", "views on social media"],
               ].map(([n, l]) => (
                 <div key={n} style={{ textAlign: "center" }}>
-                  <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 12, fontWeight: 500, color: "#111", letterSpacing: "0.02em" }}>{n}</div>
-                  <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 8, color: "#7d766e", letterSpacing: "0.1em", textTransform: "uppercase", marginTop: 2 }}>{l}</div>
+                  <div style={{ fontSize: 15, fontWeight: 600, color: "#000" }}>{n}</div>
+                  <div style={{ fontSize: 12, color: "#8e8e93", marginTop: 2 }}>{l}</div>
                 </div>
               ))}
             </div>
-            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 7, color: "#a09890", letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: "1.5rem", marginTop: "-0.4rem" }}>
-              Featured on the New York Times, SF Chronicle, SF Gate, Global News, CBC, CTV
-            </p>
-            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "0.45rem", maxWidth: 540 }}>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: "0.45rem", justifyContent: "center" }}>
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "0.5rem", maxWidth: 540 }}>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem", justifyContent: "center" }}>
                 {SUGGESTED_TOP.map(({ label, q }) => (
                   <button
                     key={label}
                     className="chip"
                     onClick={() => send(q)}
                     style={{
-                      fontFamily: "'JetBrains Mono', monospace",
-                      fontSize: 9,
-                      letterSpacing: "0.08em",
-                      padding: "0.3rem 0.75rem",
-                      background: "none",
-                      border: "1px solid #d6cfc4",
-                      color: "#7d766e",
+                      fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', system-ui, sans-serif",
+                      fontSize: 14,
+                      padding: "0.45rem 0.9rem",
+                      background: "#EBEBF0",
+                      border: "none",
+                      borderRadius: 16,
+                      color: "#000",
                       cursor: "pointer",
-                      transition: "all .12s",
+                      transition: "all .2s",
                     }}
                   >
                     {label}
                   </button>
                 ))}
               </div>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: "0.45rem", justifyContent: "center" }}>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem", justifyContent: "center" }}>
                 {SUGGESTED_BOTTOM.map(({ label, q }) => (
                   <button
                     key={label}
                     className="chip"
                     onClick={() => send(q)}
                     style={{
-                      fontFamily: "'JetBrains Mono', monospace",
-                      fontSize: 9,
-                      letterSpacing: "0.08em",
-                      padding: "0.3rem 0.75rem",
-                      background: "none",
-                      border: "1px solid #d6cfc4",
-                      color: "#7d766e",
+                      fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', system-ui, sans-serif",
+                      fontSize: 14,
+                      padding: "0.45rem 0.9rem",
+                      background: "#EBEBF0",
+                      border: "none",
+                      borderRadius: 16,
+                      color: "#000",
                       cursor: "pointer",
-                      transition: "all .12s",
+                      transition: "all .2s",
                     }}
                   >
                     {label}
@@ -310,10 +290,10 @@ export default function Page() {
               maxWidth: 680,
               width: "100%",
               margin: "0 auto",
-              padding: "2rem 1.25rem 0.5rem",
+              padding: "1rem 1rem 0.5rem",
               display: "flex",
               flexDirection: "column",
-              gap: "1.75rem",
+              gap: "0.5rem",
             }}
           >
             {messages.map((m, i) => {
@@ -325,47 +305,47 @@ export default function Page() {
                   style={{
                     display: "flex",
                     flexDirection: isUser ? "row-reverse" : "row",
-                    alignItems: "flex-start",
-                    gap: "0.75rem",
+                    alignItems: "flex-end",
+                    gap: "0.5rem",
+                    marginBottom: "0.4rem",
                   }}
                 >
+                  {!isUser && (
+                    <img src="/avatar-thinking.png" alt="" style={{ width: 32, height: 32, flexShrink: 0, objectFit: "cover" }} />
+                  )}
                   <div
                     style={{
-                      width: 48,
-                      flexShrink: 0,
-                      marginTop: 2,
-                      background: isUser ? "#edebe5" : "transparent",
-                      border: isUser ? "1px solid #d6cfc4" : "none",
+                      maxWidth: "82%",
+                      minWidth: 0,
                       display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
+                      flexDirection: "column",
+                      alignItems: isUser ? "flex-end" : "flex-start",
                     }}
                   >
-                    {isUser ? (
-                      <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 8, letterSpacing: 0, color: "#7d766e" }}>R</span>
-                    ) : (
-                      <img src="/avatar-thinking.png" alt="" style={{ width: 48, height: "auto", display: "block" }} />
-                    )}
-                  </div>
-                  <div style={{ maxWidth: "82%", minWidth: 0 }}>
                     <div
                       style={{
-                        fontSize: "0.95rem",
-                        lineHeight: 1.78,
-                        color: isUser ? "#4a4540" : "#111",
-                        fontStyle: isUser ? "italic" : "normal",
-                        paddingTop: "0.05rem",
+                        background: isUser ? "#1E90FF" : "#EBEBF0",
+                        color: isUser ? "#fff" : "#000",
+                        padding: "0.55rem 0.95rem",
+                        borderRadius: 20,
+                        borderBottomRightRadius: isUser ? 5 : 20,
+                        borderBottomLeftRadius: isUser ? 20 : 5,
+                        fontSize: "1rem",
+                        lineHeight: 1.38,
                         whiteSpace: "pre-wrap",
+                        wordBreak: "break-word",
+                        boxShadow: "0 1px 2px rgba(0,0,0,0.06)",
                       }}
                     >
                       {m.content}
                     </div>
+                    {isUser && (
+                      <span style={{ fontSize: 11, color: "#8e8e93", marginTop: 2, marginRight: 2 }}>Delivered</span>
+                    )}
                     {m.role === "assistant" && m.sources && m.sources.length > 0 && (
-                      <div style={{ marginTop: "0.85rem", paddingTop: "0.75rem", borderTop: "1px solid #d6cfc4" }}>
-                        <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 8, letterSpacing: "0.1em", textTransform: "uppercase", color: "#7d766e", marginBottom: "0.5rem" }}>
-                          Sources & links
-                        </p>
-                        <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem" }}>
+                      <div style={{ marginTop: "0.6rem", width: "100%" }}>
+                        <p style={{ fontSize: 11, color: "#8e8e93", marginBottom: "0.35rem" }}>Sources & links</p>
+                        <div style={{ display: "flex", flexWrap: "wrap", gap: "0.35rem" }}>
                           {m.sources.map(({ label, url }) => (
                             <a
                               key={url}
@@ -374,23 +354,12 @@ export default function Page() {
                               rel="noreferrer"
                               style={{
                                 display: "inline-block",
-                                fontFamily: "'JetBrains Mono', monospace",
-                                fontSize: 9,
-                                letterSpacing: "0.06em",
-                                padding: "0.25rem 0.5rem",
-                                border: "1px solid #d6cfc4",
-                                background: "#edebe5",
-                                color: "#111",
+                                fontSize: 13,
+                                padding: "0.35rem 0.65rem",
+                                borderRadius: 14,
+                                background: "#EBEBF0",
+                                color: "#1E90FF",
                                 textDecoration: "none",
-                                transition: "border-color .12s, background .12s",
-                              }}
-                              onMouseEnter={(e) => {
-                                e.currentTarget.style.borderColor = "#111";
-                                e.currentTarget.style.background = "#e5e0d8";
-                              }}
-                              onMouseLeave={(e) => {
-                                e.currentTarget.style.borderColor = "#d6cfc4";
-                                e.currentTarget.style.background = "#edebe5";
                               }}
                             >
                               {label} →
@@ -404,11 +373,9 @@ export default function Page() {
               );
             })}
             {loading && (
-              <div className="msg-in" style={{ display: "flex", alignItems: "flex-start", gap: "0.75rem" }}>
-                <div style={{ width: 48, flexShrink: 0, marginTop: 2 }}>
-                  <img src="/avatar-thinking.png" alt="" style={{ width: 48, height: "auto", display: "block" }} />
-                </div>
-                <div style={{ paddingTop: "0.45rem" }}>
+              <div className="msg-in" style={{ display: "flex", alignItems: "flex-end", gap: "0.5rem" }}>
+                <img src="/avatar-thinking.png" alt="" style={{ width: 32, height: 32, flexShrink: 0, objectFit: "cover" }} />
+                <div style={{ background: "#EBEBF0", padding: "0.6rem 0.95rem", borderRadius: 20, borderBottomLeftRadius: 5, boxShadow: "0 1px 2px rgba(0,0,0,0.06)" }}>
                   <Dots />
                 </div>
               </div>
@@ -421,9 +388,9 @@ export default function Page() {
       {/* Input */}
       <div
         style={{
-          borderTop: "1px solid #d6cfc4",
-          padding: "0.85rem 1.25rem 1rem",
-          background: "#ffffff",
+          borderTop: "1px solid #c6c6c8",
+          padding: "0.6rem 1rem 1rem",
+          background: "#f2f2f7",
           flexShrink: 0,
         }}
       >
@@ -432,15 +399,15 @@ export default function Page() {
             maxWidth: 680,
             margin: "0 auto",
             display: "flex",
-            alignItems: "flex-end",
-            gap: "0.6rem",
-            border: "1px solid #d6cfc4",
-            background: "#edebe5",
-            padding: "0.6rem 0.75rem",
-            transition: "border-color .12s",
+            alignItems: "center",
+            gap: "0.5rem",
+            background: "#fff",
+            border: "1px solid #cccccc",
+            borderRadius: 22,
+            padding: "0.35rem 0.5rem 0.35rem 0.6rem",
+            minHeight: 44,
+            boxShadow: "0 1px 2px rgba(0,0,0,0.04)",
           }}
-          onFocusCapture={(e) => (e.currentTarget.style.borderColor = "#111")}
-          onBlurCapture={(e) => (e.currentTarget.style.borderColor = "#d6cfc4")}
         >
           <textarea
             ref={textareaRef}
@@ -452,7 +419,7 @@ export default function Page() {
                 send();
               }
             }}
-            placeholder="Ask about experience, research, projects…"
+            placeholder="Message"
             rows={1}
             disabled={loading}
             style={{
@@ -460,11 +427,11 @@ export default function Page() {
               background: "none",
               border: "none",
               outline: "none",
-              fontFamily: "'EB Garamond', Georgia, serif",
-              fontSize: "0.95rem",
-              color: "#111",
+              fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', system-ui, sans-serif",
+              fontSize: 17,
+              color: "#000",
               resize: "none",
-              lineHeight: 1.55,
+              lineHeight: 1.4,
               maxHeight: 120,
               overflow: "auto",
             }}
@@ -475,43 +442,25 @@ export default function Page() {
             disabled={!input.trim() || loading}
             style={{
               flexShrink: 0,
-              width: 28,
-              height: 28,
-              background: input.trim() && !loading ? "#13100c" : "#d6cfc4",
+              width: 34,
+              height: 34,
+              borderRadius: "50%",
+              background: input.trim() && !loading ? "#007AFF" : "#c7c7cc",
               border: "none",
               cursor: input.trim() && !loading ? "pointer" : "not-allowed",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              transition: "background .12s",
+              transition: "background .2s",
             }}
           >
-            <svg
-              width="11"
-              height="11"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke={input.trim() && !loading ? "#f8f4ee" : "#a09890"}
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M22 2L11 13M22 2L15 22L11 13M11 13L2 9L22 2" />
+            <svg width={20} height={20} viewBox="0 0 24 24" fill="none" stroke={input.trim() && !loading ? "#fff" : "#8e8e93"} strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 19V5M7 11l5-5 5 5" />
             </svg>
           </button>
         </div>
-        <p
-          style={{
-            textAlign: "center",
-            marginTop: "0.55rem",
-            fontFamily: "'JetBrains Mono', monospace",
-            fontSize: 8,
-            letterSpacing: "0.1em",
-            textTransform: "uppercase",
-            color: "#d6cfc4",
-          }}
-        >
-          Jia's knowledge base
+        <p style={{ textAlign: "center", marginTop: "0.4rem", fontSize: 11, color: "#8e8e93" }}>
+          Jia&apos;s knowledge base
         </p>
       </div>
     </div>
