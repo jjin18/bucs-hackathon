@@ -6,17 +6,17 @@ type Source = { label: string; url: string };
 type Message = { role: "user" | "assistant"; content: string; sources?: Source[] };
 
 const SUGGESTED_TOP = [
-  { label: "Work experience", q: "Walk me through your work experience in detail — NimbleRx, VSP, BlackBerry, key outcomes, and what you learned." },
-  { label: "AI Research", q: "Tell me about your AI research: health AI trust (836 reviews, trust benchmark, live eval tool, Mira 1M patients) and AI infrastructure supply chain work with Harish Krishnan (transformers, HVAC, batteries, dependency map)." },
-  { label: "Hackathons", q: "Tell me about your hackathon journey in detail — Cal Hacks 1st place, MLH Top 50, what you built (e.g. Duet), and how hackathons led to your job at NimbleRx." },
-  { label: "Why PM?", q: "Why did you choose product management over pure engineering? Tell me what draws you to PM and how your background fits." },
+  { label: "Work experience", q: "Walk me through Jia's work experience — NimbleRx, VSP, BlackBerry, key outcomes, and what she learned." },
+  { label: "AI Research", q: "Tell me about Jia's AI research: health AI trust (836 reviews, trust benchmark, live eval tool, Mira 1M patients) and AI infrastructure supply chain work with Harish Krishnan (transformers, HVAC, batteries, dependency map)." },
+  { label: "Hackathons", q: "Tell me about Jia's hackathon journey — Cal Hacks 1st place, MLH Top 50, what she built (e.g. Duet), and how hackathons led to her role at NimbleRx." },
+  { label: "Why PM?", q: "Why did Jia choose product management over pure engineering? What draws her to PM and how does her background fit?" },
 ];
 
 const SUGGESTED_BOTTOM = [
-  { label: "Fav food", q: "What's your favourite food? Fat Fridays, Vancouver tier list, and what you love to eat." },
+  { label: "Fav food", q: "What's Jia's favourite food? Fat Fridays, Vancouver tier list, and what she loves to eat." },
   { label: "Virality", q: "Tell me about viral moments and reach Jia has had — LinkedIn, the performative male contest, and policy virality." },
-  { label: "Leadership", q: "Tell me about your leadership experience — the policy campaign at 17, 15k signatures, and national media." },
-  { label: "Online Persona", q: "Tell me about your online persona and how you show up on LinkedIn and in public." },
+  { label: "Leadership", q: "Tell me about Jia's leadership experience — the policy campaign at 17, 15k signatures, and national media." },
+  { label: "Online Persona", q: "Tell me about Jia's online persona and how she shows up on LinkedIn and in public." },
 ];
 
 function Dots() {
