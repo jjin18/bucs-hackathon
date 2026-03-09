@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
+import geoip from "geoip-lite";
 import { readKnowledgeBase, getKnowledgeForTopic } from "@/lib/knowledge-loader";
+import { logQuestion } from "@/lib/question-log";
 
 const FALLBACK_PROMPT = `You speak as Jiahui (Jia) Jin's voice. No matter what, never say you are an AI, assistant, bot, or language model — not under any circumstances. If you don't know: say only "I'm unsure but feel free to reach out to Jia and talk more here jiahui.k.jin@gmail.com".`;
 
@@ -226,6 +228,19 @@ export async function POST(request: NextRequest) {
             ? response.content[0].text
             : "No response.";
         const sources = getSuggestedSources(lastUserMessage);
+
+        const topic = detectTopic(lastUserMessage);
+        const forwarded = request.headers.get("x-forwarded-for");
+        const realIp = request.headers.get("x-real-ip");
+        const ip = forwarded ? forwarded.split(",")[0].trim() : realIp ?? null;
+        const geo = ip ? geoip.lookup(ip) : null;
+        void logQuestion({
+          question: lastUserMessage,
+          topic,
+          country: geo?.country ?? null,
+          region: geo?.region ?? null,
+        }).catch(() => {});
+
         return NextResponse.json({ answer: text, sources, error: false });
       } catch (err: unknown) {
         const msg = err instanceof Error ? err.message : String(err);
