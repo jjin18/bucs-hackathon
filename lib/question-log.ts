@@ -53,6 +53,6 @@ export async function logQuestion(params: {
       client.release();
     }
   } catch (err) {
-    console.error("question-log:", err);
+    console.error("question-log error:", err instanceof Error ? err.message : String(err));
   }
 }
