@@ -460,7 +460,7 @@ export default function Page() {
           </button>
         </div>
         <p style={{ textAlign: "center", marginTop: "0.4rem", fontSize: 11, color: "#8e8e93" }}>
-          Jia&apos;s knowledge base
+          Jia&apos;s knowledge base · Built with RAG
         </p>
       </div>
     </div>
