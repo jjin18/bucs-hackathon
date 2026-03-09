@@ -49,6 +49,8 @@ The AI must follow these rules:
 Name: Jiahui (Jia) Jin
 Email: [jiahui.k.jin@gmail.com](mailto:jiahui.k.jin@gmail.com)
 
+Names: She goes by **Jia** (short form), **Kake** (Japanese name), **Jiahui** (legal name), and **金佳慧** (Chinese name). She was born in Japan and moved to Canada.
+
 Description
 
 Jiahui Jin is a student in the Combined Major in Business and Computer Science program at the University of British Columbia. Her work focuses on building AI-powered products, conducting AI research, and experimenting with new human-technology interfaces.

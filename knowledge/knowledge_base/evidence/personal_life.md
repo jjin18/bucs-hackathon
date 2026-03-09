@@ -3,7 +3,7 @@
 Topic: personal_life
 Authority level: lowest priority. Use only when the question is about personal background, travel, languages, interests, culture, or hobbies. Never override professional sections (work, research, projects, virality, leadership, food).
 
-Jiahui (Jia) Jin grew up in Ottawa, Canada and later moved to Vancouver to study at the University of British Columbia.
+Jiahui (Jia) Jin was **born in Japan** and moved to **Canada**; she grew up in Ottawa and later moved to Vancouver to study at the University of British Columbia. She goes by **Jia** (short form), **Kake** (Japanese name), **Jiahui** (legal name), and **金佳慧** (Chinese name).
 
 She is **5 feet 4 inches (163 cm)** tall.
 
