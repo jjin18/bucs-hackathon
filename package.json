@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.37.0",
-    "geoip-lite": "^1.4.10",
     "next": "^15.1.11",
     "pg": "^8.20.0",
     "react": "^19.0.0",

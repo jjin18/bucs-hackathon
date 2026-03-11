@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
-import geoip from "geoip-lite";
 import { readKnowledgeBase, getKnowledgeForTopic } from "@/lib/knowledge-loader";
 import { logQuestion } from "@/lib/question-log";
 
@@ -233,12 +232,28 @@ export async function POST(request: NextRequest) {
         const forwarded = request.headers.get("x-forwarded-for");
         const realIp = request.headers.get("x-real-ip");
         const ip = forwarded ? forwarded.split(",")[0].trim() : realIp ?? null;
-        const geo = ip ? geoip.lookup(ip) : null;
+        let country: string | null = null;
+        let region: string | null = null;
+        if (ip && !ip.startsWith("127.") && ip !== "::1") {
+          try {
+            const res = await fetch(
+              `https://ip-api.com/json/${encodeURIComponent(ip)}?fields=country,regionName`,
+              { signal: AbortSignal.timeout(2000) }
+            );
+            if (res.ok) {
+              const data = (await res.json()) as { country?: string; regionName?: string };
+              country = data.country ?? null;
+              region = data.regionName ?? null;
+            }
+          } catch {
+            // ignore geo lookup errors
+          }
+        }
         void logQuestion({
           question: lastUserMessage,
           topic,
-          country: geo?.country ?? null,
-          region: geo?.region ?? null,
+          country,
+          region,
         }).catch(() => {});
 
         return NextResponse.json({ answer: text, sources, error: false });
